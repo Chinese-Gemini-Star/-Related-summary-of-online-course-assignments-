@@ -1,0 +1,17 @@
+iframe {
+	/* 调整框架的长和宽 */
+	width: 100%;
+	height: 670px;
+}
+p {
+	/* 调整段落的字号 */
+	font-size: 25px;
+}
+h1 {
+	/* 调整主标题的字号 */
+	font-size: 60px;
+}
+h3 {
+	/* 调整小标题的字号 */
+	font-size: 40px;
+}
