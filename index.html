@@ -4,9 +4,15 @@
 		1、修改id为top的div标签内部的今日作业总汇,每一行用一个<p>标签包围
 			例:<p>语文</p>
 			　 <p>1、完成文件里的练习</p>
-		2、修改JavaScript代码内主程序中if分支语句中调用函数:
-			1) 用 // 注释掉无需要的科目(或者直接删掉,但是不建议)
-			2) 更改对应科目函数的参数列表,格式: "小标题", isPC() ? "PC端网址" : "移动端网址"
+		2、修改JavaScript代码内主程序中if分支语句中调用的newSignInInterface函数的参数列表:
+			1) 可用 // 注释掉暂时无需要的科目(或者直接删掉,但是不建议)
+			2) 第一个参数为打卡框架的标题,可输入科目,可省,但不建议,省略时键入underfined
+			3) 第二个参数为提示或者说明,可输入一些特殊要求,可省,省略时键入underfined
+			4) 第三个参数为打卡框架的地址,如果PC端和移动端网址不同,可通过isPC() : "PC端网址" : "移动端网址" 格式传入,可省
+			e.g.:newSignInInterface("化学", "请自行在\"化学作业检查群\"中打卡");// 化学作业打卡
+				 newSignInInterface("地理", undefined, "");// 地理作业打卡
+				 newSignInInterface("信息", "请之前未完成的同学在今天晚上完成,并私聊发我截图!", isPC() ? "" : "");//信息技术打卡
+				 newSignInInterface("总打卡", undefined, isPC() ? "" : "");// 总打卡
 -->
 <html>
 	<head>
@@ -15,16 +21,34 @@
 		<!-- 标题 -->
 		<title>网课作业打卡所需总汇</title>
 		<!-- 调整网页外观 -->
-		<link href="CSS/CSS.css" rel="stylesheet" type="text/css">
+		<style type="text/css">
+			iframe {
+				/* 调整框架的长和宽 */
+				width: 100%;
+				height: 670px;
+			}
+			p {
+				/* 调整段落的字号 */
+				font-size: 25px;
+			}
+			h1 {
+			/* 调整主标题的字号 */
+				font-size: 60px;
+			}
+			h3 {
+				/* 调整小标题的字号 */
+				font-size: 40px;
+			}
+		</style>
     </head>
 	<body>
 		<!-- 开头 -->
 		<div id="top">
 			<h1>网课作业打卡所需总汇</h1>
 			<p>要打卡的东西实在太多了,我这里就写个网页,把网课所有需要的所有有关作业的东西都放在这里,大家可以直接在这里完成网课所需的全部内容.</p>
-			<p>建议用PC端(电脑)查看此网页,PC端建议用Chrome或Firefox浏览器查看此网页;移动端(手机、平板等,不包括游戏机)建议用UC浏览器或QQ浏览器(Firefox for android也可尝试,但此浏览器并不适合平时使用)查看此网页;游戏端(游戏机等)建议你不要作死,乖乖用PC端或移动端吧.</p>
-			<p>经过2月2日初次尝试使用,已对已知的所有bug进行了修复,并调大了字号以适配移动端(移动端建议横屏浏览(就是把手机画面横过来),效果更加).此网页仍然可能会出现较多异常,如果你在使用该网页时出现任何问题,或者有对该网页的运维有建设性的意见的话,欢迎私聊告诉我.</p>
-			<p><del>来自一个不会做浏览器兼容的前端萌新的卑微</del></p>
+			<p>PC端建议使用Chrome或Firefox浏览器查看此网页;移动端建议使用UC或QQ浏览器查看此网页.</p>
+			<p>如果出现超链接无法跳转的问题,可长按链接后复制网址打开.</p>
+			<p>此网页仍然可能会出现异常,如果你在使用该网页时出现任何问题,或者有对该网页的运维有建设性的意见的话,欢迎私聊告诉我.</p>
 		</div>
 		
 		<!-- 作业总汇 -->
@@ -38,11 +62,105 @@
 		<!-- JavaScript异常提示 -->
 		<noscript>
 			<p>你当前的浏览器不支持JavaScript或已将其禁用,请尝试更换浏览器或解除对JavaScript的禁用.</p>
-			<p>这个问题多见于移动端,如果不是你禁用了就是浏览器本身或者你的手机的问题.我个人之前调试此问题时发现使用火狐浏览器访问时此问题消失,各位可尝试使用火狐浏览器.</p>
+			<p>这个问题多见于移动端.如果你是PC端,请检查你是否使用了IE浏览器.移动端如果不是你禁用了JavaScript就是浏览器本身或者你的手机的问题.我个人之前调试此问题时发现使用手机版火狐浏览器访问时此问题消失,各位可尝试使用火狐浏览器.</p>
 			<p>火狐,永远滴神!</p>
 		</noscript>
 		
 		<!-- 根据时间自动控制动态生成 -->
-		<script type="text/javascript" src="JavaScript/JavaScript.js" ></script>
+		<script type="text/javascript">
+			/**
+  			  *	主函数
+  			  */
+			(function(){
+				// 给熊孩子的警告
+				console.log("请不要尝试更改网页源码,这样很无聊.与其用这些时间改网页的源码,不如再多去刷几道题.");
+	
+				// 获取当前时间对象
+				var now = new Date();
+				console.log(now);
+	
+				// 动态生成标题
+				var month = parseInt(now.getMonth()) + 1;// 获取当前月份
+				var day = parseInt(now.getDay()) + 1;// 获取当前日期
+				console.log(month + "月" + day + "日");
+				document.title = month + "月" + day + "日" + document.title;// 动态更改网页标题
+				var top = document.getElementById("top");// 获取网页顶端的div标签
+				top.children[0].innerHTML = document.title;// 动态更改网页顶端文字
+	
+				//判断是否开始打卡
+				var hour = parseInt(now.getHours());// 获取当前小时
+				console.log(hour + "时");
+				if(hour >= 21) {// 到打卡时间
+					// 显示打卡网页,运维方法见index.html内的注释
+					console.log("可打卡");
+					// 在此处手动更新每日作业打卡框架
+				}else { // 未到打卡时间
+					// 显示未到时间信息
+					console.log("未到时间");
+					newSignInInterface("现在还未到作业打卡时间(晚上9点),请先认真完成作业.","如果已到9点,请刷新或重新打开本网页.");
+				}
+			})();
+
+			/**
+ 			  *	添加打卡页面
+ 			  *	@param title 框架标题,可选
+ 			  *	@param tips 提示(说明)文本,可选
+ 			  *	@param url 地址,可选
+ 			  */
+			function  newSignInInterface(title, tips ,url) {
+				// 外层框架
+				var div = document.createElement("div");
+				document.body.appendChild(div);
+				if (title != undefined) {// 传入标题
+						// 标题
+						var h3 = document.createElement("h3");
+						h3.innerHTML = title;
+						div.appendChild(h3);
+				}
+				if (tips != undefined) {// 传入提示
+					// 提示文本
+					var p1 = document.createElement("p");
+					p1.innerHTML = tips;
+					div.appendChild(p1);
+				}
+				if (url != undefined) {// 传入地址
+					// 无法打开兼容
+					var p2 = document.createElement("p");
+					p2.innerHTML = "如果下面的页面长时间显示白屏,请";
+					div.appendChild(p2);
+					// 跳转链接
+					var a = document.createElement("a");
+					a.href = url;
+					a.innerHTML = "点此跳转";
+					a.onclick = function(){
+						window.location.href = url;
+					};// 绑定点按事件,以兼容移动端
+					p2.appendChild(a);
+					// 访问页面
+					var iframe = document.createElement("iframe");
+					iframe.src = url;
+					iframe.frameborder = "0";
+					iframe.scrolling = "auto";
+					div.appendChild(iframe);
+				}
+			}
+
+
+			/**
+  			  *	判断是否为PC端
+  			  */
+			function isPC() {
+				var userAgentInfo = navigator.userAgent;
+				var Agents = ["Android", "iPhone","SymbianOS", "Windows Phone","iPad", "iPod"];
+				var flag = true;
+				for (var v = 0; v < Agents.length; v++) {
+					if (userAgentInfo.indexOf(Agents[v]) > 0) {
+						flag = false;
+						break;
+					}
+				}
+				return flag;
+			}
+		</script>
 	</body>
 </html>
