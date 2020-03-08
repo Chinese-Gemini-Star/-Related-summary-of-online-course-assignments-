@@ -1,4 +1,11 @@
 /**
+   *	生成全部打卡界面
+   */
+function newAllSignInInterface() {
+	// 在此处手动更新每日作业打卡框架
+}
+
+/**
   *	主函数
   */
 (function(){
@@ -16,18 +23,50 @@
 	document.title = month + "月" + day + "日" + document.title;// 动态更改网页标题
 	var top = document.getElementById("top");// 获取网页顶端的div标签
 	top.children[0].innerHTML = document.title;// 动态更改网页顶端文字
-	
+
 	//判断是否开始打卡
 	var hour = parseInt(now.getHours());// 获取当前小时
 	console.log(hour + "时");
 	if(hour >= 21) {// 到打卡时间
 		// 显示打卡网页,运维方法见index.html内的注释
 		console.log("可打卡");
-		// 在此处手动更新每日作业打卡框架
-	}else { // 未到打卡时间
+		newAllSignInInterface();
+	} else { // 未到打卡时间
 		// 显示未到时间信息
 		console.log("未到时间");
-		newSignInInterface("现在还未到作业打卡时间(晚上9点),请先认真完成作业.","如果已到9点,请刷新或重新打开本网页.");
+		var search = window.location.search.substring(1);// 获取当前网页参数
+		console.log(search);
+		if(search != "cipher=%E5%88%86%E6%97%B6%E5%8C%96%E8%82%B2") {// 判断时候拥有正确的密钥
+			// 无密钥,显示未到时间界面
+			newSignInInterface("现在还未到作业打卡时间(晚上9点),请先认真完成作业.","如果已到9点,请刷新或重新打开本网页.");
+			// 获取暗层
+			var homeworkTitle = document.getElementById("homework").children[0];
+			// 绑定按下事件(与松开配合判断长按)
+			homeworkTitle.onmousedown = function() {
+				// 按下时间(全局变量)
+				down = new Date();
+			}
+			// 绑定松开事件,并判定是否长按
+			homeworkTitle.onmouseup = function() {
+				// 松开时间(全局变量)
+				up = new Date();
+				// 判断是否长按1秒
+				if(up - down >= 1 * 1000) {
+					// 触发密钥验证
+					console.log("密钥验证触发");
+					// 获取密钥输入
+					var imput = prompt("你在干什么?");
+					console.log(imput);
+					if(imput != null && imput != "")// 输入内容
+						window.location.href += "?cipher=" + imput;// 增加参数,并重新加载页面判定
+				}
+			}
+		} else {
+			// 密钥正确
+			console.log("暗号正确,分时化育");
+			// 提前显示所有打卡界面
+			newAllSignInInterface();
+		}
 	}
 })();
 
@@ -84,10 +123,10 @@ function isPC() {
 		var Agents = ["Android", "iPhone","SymbianOS", "Windows Phone","iPad", "iPod"];
 		var flag = true;
 		for (var v = 0; v < Agents.length; v++) {
-		if (userAgentInfo.indexOf(Agents[v]) > 0) {
-				flag = false;
-			break;
-		}
+				if (userAgentInfo.indexOf(Agents[v]) > 0) {
+						flag = false;
+					break;
+				}
 		}
 		return flag;
 }
