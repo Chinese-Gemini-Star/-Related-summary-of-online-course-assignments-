@@ -44,7 +44,7 @@ function newAllSignInInterface() {
 		console.log("未到时间");
 		var search = window.location.search.substring(1);// 获取当前网页参数
 		console.log(search);
-		if(search != "cipher=&pass=4") {// 判断时候拥有正确的密钥,在cipher值后更新密钥(4个中文长度),请使用url字符格式(%+十六进制值)
+		if(search != "cipher=&len=4") {// 判断时候拥有正确的密钥,在cipher值中更新密钥值,请使用url字符格式(%+十六进制值),len值中更新字符长度
 			if(search != "") 
 				window.location.href = window.location.href.split("?")[0];// 密钥错误,再次刷新页面
 			// 显示未到时间界面
@@ -67,7 +67,7 @@ function newAllSignInInterface() {
 					// 获取密钥输入
 					var imput = prompt("你在干什么?");
 					console.log(imput + "\r\n" + encodeURI(imput));
-					window.location.href = window.location.href.split("?")[0] +  "?cipher=" + encodeURI(imput) + "&pass=" + imput.length;// 增加参数(自动转为url字符),并重新加载页面判定
+					window.location.href = window.location.href.split("?")[0] +  "?cipher=" + encodeURI(imput) + "&len=" + imput.length;// 增加参数(自动转为url字符),并重新加载页面判定
 				}
 			});
 		} else {
