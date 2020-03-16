@@ -11,8 +11,9 @@ function newAllSignInInterface() {
 
 /**
   *	主函数
+  * @param password 密钥
   */
-(function(){
+(function(password){
 	// 给熊孩子的警告
 	console.log("请不要尝试更改网页源码,这样很无聊.与其用这些时间改网页的源码,不如再多去刷几道题.");
 	
@@ -44,7 +45,7 @@ function newAllSignInInterface() {
 		console.log("未到时间");
 		var search = window.location.search.substring(1);// 获取当前网页参数
 		console.log(search);
-		if(search != "cipher=&len=4") {// 判断时候拥有正确的密钥,在cipher值中更新密钥值,请使用url字符格式(%+十六进制值),len值中更新字符长度
+		if(search != "cipher="+encodeURI(password)+"&len=4") {// // 判断时候拥有正确4位中文长度的密钥
 			if(search != "") 
 				window.location.href = window.location.href.split("?")[0];// 密钥错误,再次刷新页面
 			// 显示未到时间界面
@@ -77,7 +78,7 @@ function newAllSignInInterface() {
 			newAllSignInInterface();
 		}
 	}
-})();
+})(/*在此处更新4位中文长度密钥*/);
 
 /**
  *	添加打卡页面
