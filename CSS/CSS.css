@@ -3,9 +3,13 @@ iframe {
 	width: 100%;
 	height: 670px;
 }
-p {
-	/* 调整段落的字号 */
+p,button {
+	/* 调整段落和按钮的字号 */
 	font-size: 25px;
+}
+span {
+	/* 加红文本 */
+	color: red;
 }
 h1 {
 	/* 调整主标题的字号 */

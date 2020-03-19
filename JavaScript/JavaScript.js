@@ -100,6 +100,7 @@ function  newSignInInterface(title, tips ,url) {
 		// 提示文本
 		var p1 = document.createElement("p");
 		p1.innerHTML = tips;
+		p1.style = "color: red";// 设置提示文本颜色
 		div.appendChild(p1);
 	}
 	if (url != undefined) {// 传入地址
