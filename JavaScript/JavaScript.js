@@ -3,11 +3,11 @@
   */
 function newAllSignInInterface() {
 // 在此处手动更新每日作业打卡框架
-newSignInInterface("网课出勤打卡", undefined, "https://www.wjx.top/" + isPC()? "jq" : "m" + "/67661044.aspx");
+newSignInInterface("网课出勤打卡", undefined, "https://www.wjx.top/" + (isPC()? "jq" : "m") + "/67661044.aspx");
 newSignInInterface("化学作业打卡", "请自行在\"106网课打卡群\"中打卡");
 newSignInInterface("地理作业打卡", "请自行在\"106网课打卡群\"中打卡");
 newSignInInterface("信息技术作业打卡", "请自行在\"106网课打卡群\"中打卡");
-newSignInInterface("网课作业打卡总汇", undefined, "https://www.wjx.top/" + isPC()? "jq" : "m" + "/67662655.aspx");
+newSignInInterface("网课作业打卡总汇", undefined, "https://www.wjx.top/" + (isPC()? "jq" : "m") + "/67662655.aspx");
 }
 
 /**
