@@ -2,11 +2,12 @@
   *	生成全部打卡界面
   */
 function newAllSignInInterface() {
-	// 在此处手动更新每日作业打卡框架
-	newSignInInterface("网课出勤打卡", undefined, isPC() ? "https://www.wjx.top/jq/64071454.aspx" : "https://www.wjx.top/m/64071454.aspx");
-	newSignInInterface("化学作业打卡", "请自行在\"106网课打卡群\"中打卡");
-	newSignInInterface("地理作业打卡", "请自行在\"106网课打卡群\"中打卡");
-	newSignInInterface("网课作业打卡总汇", undefined, isPC() ? "https://www.wjx.top/jq/64071515.aspx" : "https://www.wjx.top/m/64071515.aspx");
+// 在此处手动更新每日作业打卡框架
+newSignInInterface("网课出勤打卡", undefined, "https://www.wjx.top/" + isPC()? "jq" : "m" + "/67661044.aspx");
+newSignInInterface("化学作业打卡", "请自行在\"106网课打卡群\"中打卡");
+newSignInInterface("地理作业打卡", "请自行在\"106网课打卡群\"中打卡");
+newSignInInterface("信息技术作业打卡", "请自行在\"106网课打卡群\"中打卡");
+newSignInInterface("网课作业打卡总汇", undefined, "https://www.wjx.top/" + isPC()? "jq" : "m" + "/67662655.aspx");
 }
 
 /**
@@ -16,33 +17,6 @@ function newAllSignInInterface() {
 (function(password){
 	// 给熊孩子的警告
 	console.log("请不要尝试更改网页源码,这样很无聊.与其用这些时间改网页的源码,不如再多去刷几道题.");
-	
-	// 禁止打开控制台
-    document.oncontextmenu = new Function("return false;");// 禁用右键菜单
-    document.onkeydown = document.onkeyup = document.onkeypress = 
-        function(event) { 
-            var e = event || window.event || arguments.callee.caller.arguments[0];
-            if (e && e.keyCode == 123) {
-                alert("请不要尝试更改网页源码,这样很无聊.与其用这些时间改网页的源码,不如再多去刷几道题.");
-                e.returnValue = false;
-                return (false);
-            }
-        };// 监听键盘F12事件,阻止打开控制台
-	
-	// 尝试阻止控制台调用JavaScript函数
-    try {
-        var $_console$$ = console;
-        Object.defineProperty(window, "console", {
-            get: function() {
-                if ($_console$$._commandLineAPI)
-                    throw "抱歉, 为了用户安全, 本网站已禁用console脚本功能";
-                    return $_console$$;
-            },
-            set: function($val$$) {
-                $_console$$ = $val$$;
-            }
-        });
-    } catch ($ignore$$) {}
 	
 	// 获取当前时间对象
 	var now = new Date();
@@ -79,10 +53,35 @@ function newAllSignInInterface() {
 		console.log(search);
 		if(search != "") 
 			window.location.href = window.location.href.split("?")[0];// 密钥错误,再次刷新页面
-		// 显示未到时间界面
-		newSignInInterface("现在还未到作业打卡时间或已过打卡时间(晚上9点半到第二天早上8点),请先认真完成作业或去自闭.","如果已到打卡时间,请刷新或重新打开本网页.");
 		// 获取暗层
 		var homeworkTitle = document.getElementById("homework").children[0];
+		// 禁止打开控制台
+        document.oncontextmenu = new Function("return false;");// 禁用右键菜单
+        document.onkeydown = document.onkeyup = document.onkeypress = 
+            function(event) { 
+                var e = event || window.event || arguments.callee.caller.arguments[0];
+                if (e && e.keyCode == 123) {
+                    e.returnValue = false;
+                    return (false);
+                }
+            };// 监听键盘F12事件,阻止打开控制台
+
+        // 尝试阻止控制台调用JavaScript函数
+        try {
+            var $_console$$ = console;
+            Object.defineProperty(window, "console", {
+                get: function() {
+                    if ($_console$$._commandLineAPI)
+                        throw "请不要尝试更改网页源码,这样很无聊.与其用这些时间改网页的源码,不如再多去刷几道题.";
+                        return $_console$$;
+                },
+                set: function($val$$) {
+                    $_console$$ = $val$$;
+                }
+            });
+        } catch ($ignore$$) {}
+		// 显示未到时间界面
+		newSignInInterface("现在还未到作业打卡时间或已过打卡时间(晚上9点半到第二天早上8点),请先认真完成作业或去自闭.","如果已到打卡时间,请刷新或重新打开本网页.");
 		// 绑定按下事件(与松开配合判断长按)
 		homeworkTitle.addEventListener(isPC() ? "mousedown" : "touchstart", function() {
 			// 按下时间(全局变量)
