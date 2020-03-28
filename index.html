@@ -39,10 +39,10 @@
 			<h3>作业总汇</h3>
 			<!-- 在此手动更新每日作业 -->
 			<!-- 信息作业补做(备份)
-				<button onclick="newSignInInterface('信息作业补做', undefined , isPC() ? 'https://ks.wjx.top/jq/63829275.aspx' : 'https://ks.wjx.top/m/63829275.aspx');alert('已在网页底部生成信息作业补做页面');this.parentNode.removeChild(this);">补做信息作业页面请点我生成</button>
+				<button onclick="newSignInInterface('信息作业补做', undefined , isPC() ? 'https://ks.wjx.top/jq/63829275.aspx' : 'https://ks.wjx.top/m/63829275.aspx');showPop('<p>已在网页底部生成信息作业补做页面</p>');this.parentNode.removeChild(this);">补做信息作业页面请点我生成</button>
 			-->
 		</div>
-		
+        
 		<br>
 		
 		<!-- JavaScript异常提示 -->
@@ -51,8 +51,10 @@
 			<p>这个问题多见于移动端.如果你是PC端,请检查你是否使用了IE浏览器.移动端如果不是你禁用了JavaScript就是浏览器本身或者你的手机的问题.我个人之前调试此问题时发现使用手机版火狐浏览器访问时此问题消失,各位可尝试使用火狐浏览器.</p>
 			<p>火狐,永远滴神!</p>
 		</noscript>
-		
-		<!-- 根据时间自动控制动态生成 -->
-		<script type="text/javascript" src="JavaScript/JavaScript.js"></script>
+
+        <!-- div模拟弹窗工具包 -->
+        <script type="text/javascript" src="JavaScript/div模拟弹窗.js"></script>
+        <!-- 根据时间自动控制动态生成 -->
+        <script type="text/javascript" src="JavaScript/JavaScript.js"></script>
 	</body>
 </html>

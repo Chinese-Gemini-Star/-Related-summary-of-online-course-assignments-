@@ -30,6 +30,7 @@ newSignInInterface("网课作业打卡总汇", undefined, "https://www.wjx.top/"
 	document.title = month + "月" + date + "日" + document.title;// 动态更改网页标题
 	var top = document.getElementById("top");// 获取网页顶端的div标签
 	top.children[0].innerHTML = document.title;// 动态更改网页顶端文字
+    
 	//判断是否显示打卡页面
 	var hour = parseInt(now.getHours());// 获取当前小时
 	var minute = parseInt(now.getMinutes());// 获取当前分钟
@@ -39,6 +40,7 @@ newSignInInterface("网课作业打卡总汇", undefined, "https://www.wjx.top/"
 	var isWeekendTime = (day == 6 && isNightTime) || (day == 0 && hour < 8); // 周末打卡时间区间:星期六晚上9点半到星期天早上8点前
 	var isWeekdayTime = (day >= 1 && day <= 4 && isNightTime) || (day >= 2 && day <= 5 && hour < 8);// 工作日打卡时间:星期一到星期四晚上9点半至次日(星期二到星期五)早上8点前
 	var passwordIsRight = search == "cipher="+encodeURI(password)+"&len=4";
+    
 	if (isWeekdayTime || isWeekendTime || passwordIsRight) {// 可显示打卡
 		// 显示打卡网页,运维方法见index.html内的注释
 		if (passwordIsRight)
@@ -61,8 +63,10 @@ newSignInInterface("网课作业打卡总汇", undefined, "https://www.wjx.top/"
             function(event) { 
                 var e = event || window.event || arguments.callee.caller.arguments[0];
                 if (e && e.keyCode == 123) {
+//                    alert("请不要尝试更改网页源码,这样很无聊.与其用这些时间改网页的源码,不如再多去刷几道题.");
+                    showPop("<p>请不要尝试更改网页源码,这样很无聊.与其用这些时间改网页的源码,不如再多去刷几道题.</p>");
                     e.returnValue = false;
-                    return (false);
+                    return false;
                 }
             };// 监听键盘F12事件,阻止打开控制台
 
@@ -96,9 +100,13 @@ newSignInInterface("网课作业打卡总汇", undefined, "https://www.wjx.top/"
 				// 触发密钥验证
 				console.log("密钥验证触发");
 				// 获取密钥输入
-				var imput = prompt("你在干什么?");
-				console.log(imput + "\r\n" + encodeURI(imput));
-				window.location.href = window.location.href.split("?")[0] +  "?cipher=" + encodeURI(imput) + "&len=" + imput.length;// 增加参数(自动转为url字符),并重新加载页面判定
+//				var imput = prompt("你在干什么?");
+                if(isPC()){
+                    showPop("<p>你在干什么?</p>"
+                        +"<p><input type= \"text\" id= \"imput\" /></p>","processPasswordImput()");
+                } else {
+                    processPasswordImput(prompt("你在干什么?"));
+                }
 			}
 		});
 	}
@@ -149,6 +157,16 @@ function  newSignInInterface(title, tips ,url) {
 	}
 }
 
+/**
+  * 处理传入的密钥数据
+  * @param imput 传入数据,不填代表通过输入框传入,填写代表通过其他方法传入,可省
+  */
+function processPasswordImput(imput) {
+    if (imput == undefined)
+        imput = document.getElementById("imput").value;// 获取用户输入
+    console.log(imput + "\r\n" + encodeURI(imput));
+    window.location.href = window.location.href.split("?")[0] +  "?cipher=" + encodeURI(imput) + "&len=" + imput.length;// 增加参数(自动转为url字符),并重新加载页面判定  
+}
 
 /**
   *	判断是否为PC端
