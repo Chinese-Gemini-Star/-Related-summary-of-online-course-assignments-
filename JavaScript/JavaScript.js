@@ -17,6 +17,33 @@ function newAllSignInInterface() {
 	// 给熊孩子的警告
 	console.log("请不要尝试更改网页源码,这样很无聊.与其用这些时间改网页的源码,不如再多去刷几道题.");
 	
+	// 禁止打开控制台
+    document.oncontextmenu = new Function("return false;");// 禁用右键菜单
+    document.onkeydown = document.onkeyup = document.onkeypress = 
+        function(event) { 
+            var e = event || window.event || arguments.callee.caller.arguments[0];
+            if (e && e.keyCode == 123) {
+                alert("请不要尝试更改网页源码,这样很无聊.与其用这些时间改网页的源码,不如再多去刷几道题.");
+                e.returnValue = false;
+                return (false);
+            }
+        };// 监听键盘F12事件,阻止打开控制台
+	
+	// 尝试阻止控制台调用JavaScript函数
+    try {
+        var $_console$$ = console;
+        Object.defineProperty(window, "console", {
+            get: function() {
+                if ($_console$$._commandLineAPI)
+                    throw "抱歉, 为了用户安全, 本网站已禁用console脚本功能";
+                    return $_console$$;
+            },
+            set: function($val$$) {
+                $_console$$ = $val$$;
+            }
+        });
+    } catch ($ignore$$) {}
+	
 	// 获取当前时间对象
 	var now = new Date();
 	console.log(now);
@@ -29,56 +56,54 @@ function newAllSignInInterface() {
 	document.title = month + "月" + date + "日" + document.title;// 动态更改网页标题
 	var top = document.getElementById("top");// 获取网页顶端的div标签
 	top.children[0].innerHTML = document.title;// 动态更改网页顶端文字
-	//判断是否开始打卡
+	//判断是否显示打卡页面
 	var hour = parseInt(now.getHours());// 获取当前小时
 	var minute = parseInt(now.getMinutes());// 获取当前分钟
 	console.log(hour + "时" + minute + "分");
+	var search = window.location.search.substring(1);// 获取当前网页参数
 	var isNightTime = (hour == 21 && minute >= 30) || hour >= 22; // 晚上打卡时间判定(9点半以后)
 	var isWeekendTime = (day == 6 && isNightTime) || (day == 0 && hour < 8); // 周末打卡时间区间:星期六晚上9点半到星期天早上8点前
-	var isWeekdayTime = (day >= 1 && day <= 4 && isNightTime) || (day >= 2 && day <= 5 && hour <= 8);// 工作日打卡时间:星期一到星期四晚上9点半至次日(星期二到星期五)早上8点前
-	if(isWeekdayTime || isWeekendTime) {// 到打卡时间
+	var isWeekdayTime = (day >= 1 && day <= 4 && isNightTime) || (day >= 2 && day <= 5 && hour < 8);// 工作日打卡时间:星期一到星期四晚上9点半至次日(星期二到星期五)早上8点前
+	var passwordIsRight = search == "cipher="+encodeURI(password)+"&len=4";
+	if (isWeekdayTime || isWeekendTime || passwordIsRight) {// 可显示打卡
 		// 显示打卡网页,运维方法见index.html内的注释
-		console.log("可打卡");
+		if (passwordIsRight)
+			console.log("暗号正确");
+		else 
+			console.log("可打卡");
 		newAllSignInInterface();
 	} else { // 未到打卡时间
 		// 显示未到时间信息
 		console.log("未到时间");
 		var search = window.location.search.substring(1);// 获取当前网页参数
 		console.log(search);
-		if(search != "cipher="+encodeURI(password)+"&len=4") {// // 判断时候拥有正确4位中文长度的密钥
-			if(search != "") 
-				window.location.href = window.location.href.split("?")[0];// 密钥错误,再次刷新页面
-			// 显示未到时间界面
-			newSignInInterface("现在还未到作业打卡时间或已过打卡时间(晚上9点半到第二天早上8点),请先认真完成作业或去自闭.","如果已到打卡时间,请刷新或重新打开本网页.");
-			// 获取暗层
-			var homeworkTitle = document.getElementById("homework").children[0];
-			// 绑定按下事件(与松开配合判断长按)
-			homeworkTitle.addEventListener(isPC() ? "mousedown" : "touchstart", function() {
-				// 按下时间(全局变量)
-				down = new Date();
-			});
-			// 绑定松开事件,并判定是否长按
-			homeworkTitle.addEventListener(isPC() ? "mouseup" : "touchend", function() {
-				// 松开时间(全局变量)
-				up = new Date();
-				// 判断是否长按0.5秒
-				if(up - down >= 5 * 100) {
-					// 触发密钥验证
-					console.log("密钥验证触发");
-					// 获取密钥输入
-					var imput = prompt("你在干什么?");
-					console.log(imput + "\r\n" + encodeURI(imput));
-					window.location.href = window.location.href.split("?")[0] +  "?cipher=" + encodeURI(imput) + "&len=" + imput.length;// 增加参数(自动转为url字符),并重新加载页面判定
-				}
-			});
-		} else {
-			// 密钥正确
-			console.log("暗号正确");
-			// 提前显示所有打卡界面
-			newAllSignInInterface();
-		}
+		if(search != "") 
+			window.location.href = window.location.href.split("?")[0];// 密钥错误,再次刷新页面
+		// 显示未到时间界面
+		newSignInInterface("现在还未到作业打卡时间或已过打卡时间(晚上9点半到第二天早上8点),请先认真完成作业或去自闭.","如果已到打卡时间,请刷新或重新打开本网页.");
+		// 获取暗层
+		var homeworkTitle = document.getElementById("homework").children[0];
+		// 绑定按下事件(与松开配合判断长按)
+		homeworkTitle.addEventListener(isPC() ? "mousedown" : "touchstart", function() {
+			// 按下时间(全局变量)
+			down = new Date();
+		});
+		// 绑定松开事件,并判定是否长按
+		homeworkTitle.addEventListener(isPC() ? "mouseup" : "touchend", function() {
+			// 松开时间(全局变量)
+			up = new Date();
+			// 判断是否长按0.5秒
+			if(up - down >= 5 * 100) {
+				// 触发密钥验证
+				console.log("密钥验证触发");
+				// 获取密钥输入
+				var imput = prompt("你在干什么?");
+				console.log(imput + "\r\n" + encodeURI(imput));
+				window.location.href = window.location.href.split("?")[0] +  "?cipher=" + encodeURI(imput) + "&len=" + imput.length;// 增加参数(自动转为url字符),并重新加载页面判定
+			}
+		});
 	}
-})(/*在此处更新4位中文长度密钥*/);
+})(/*在此处更新4位中文长度密钥,可用URI字符加密*/);
 
 /**
  *	添加打卡页面
