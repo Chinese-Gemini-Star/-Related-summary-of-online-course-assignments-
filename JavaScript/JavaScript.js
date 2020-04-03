@@ -1,7 +1,7 @@
 /**
-  *	生成全部打卡界面
+  * 生成全部打卡界面
   */
-function newAllSignInInterface() {
+function newAllSignInInterface() { 
 // 在此处手动更新每日作业打卡框架
 newSignInInterface("网课出勤打卡", undefined, "https://www.wjx.top/" + (isPC()? "jq" : "m") + "/67661044.aspx");
 newSignInInterface("化学作业打卡", "请自行在\"106网课打卡群\"中打卡");
@@ -11,7 +11,7 @@ newSignInInterface("网课作业打卡总汇", undefined, "https://www.wjx.top/"
 }
 
 /**
-  *	主函数
+  * 主函数
   * @param password 密钥
   */
 (function(password){
@@ -175,10 +175,10 @@ newSignInInterface("网课作业打卡总汇", undefined, "https://www.wjx.top/"
 })(/*在此处更新4位中文长度密钥,可用URI字符加密*/);
 
 /**
- *	添加打卡页面
- *	@param title 框架标题,可选
- *	@param tips 提示(说明)文本,可选
- *	@param url 地址,可选
+ * 添加打卡页面
+ * @param title 框架标题,可选
+ * @param tips 提示(说明)文本,可选
+ * @param url 地址,可选
  */
 function  newSignInInterface(title, tips ,url) {
 	// 外层框架
@@ -231,7 +231,7 @@ function processPasswordImput(imput) {
 }
 
 /**
-  *	判断是否为PC端
+  * 判断是否为PC端
   */
 function isPC() {
 		var userAgentInfo = navigator.userAgent;
