@@ -41,6 +41,11 @@ newSignInInterface("网课作业打卡总汇", undefined, "https://www.wjx.top/"
 	var isWeekdayTime = (day >= 1 && day <= 4 && isNightTime) || (day >= 2 && day <= 5 && hour < 8);// 工作日打卡时间:星期一到星期四晚上9点半至次日(星期二到星期五)早上8点前
 	var passwordIsRight = search == "cipher="+encodeURI(password)+"&len=4";
     
+    // 判断是否需要提示弹窗
+    if (search == "alert=true") {
+        showPop("<p>已过打卡时间,如果仍未提交打卡请去自闭.</p>","window.location.href = window.location.href.split(\"?\")[0];closePop();");
+    }
+    
 	if (isWeekdayTime || isWeekendTime || passwordIsRight) {// 可显示打卡
 		// 显示打卡网页,运维方法见index.html内的注释
 		if (passwordIsRight)
@@ -48,6 +53,40 @@ newSignInInterface("网课作业打卡总汇", undefined, "https://www.wjx.top/"
 		else 
 			console.log("可打卡");
 		newAllSignInInterface();
+        
+        // 循环判定刷新页面
+        setInterval(function() {
+            // 不是通过秘钥进入
+            if(!passwordIsRight) {
+                // 重置时间并判断是否已过打卡时间
+                now = new Date();
+                console.log(now);
+                month = parseInt(now.getMonth()) + 1;
+                date = parseInt(now.getDate());
+                day = parseInt(now.getDay());
+                console.log(month + "月" + date + "日" + "星期:" +  day);
+                hour = parseInt(now.getHours());
+                minute = parseInt(now.getMinutes());
+                console.log(hour + "时" + minute + "分");
+                isNightTime = (hour == 21 && minute >= 30) || hour >= 22; 
+                isWeekendTime = (day == 6 && isNightTime) || (day == 0 && hour < 8);
+                isWeekdayTime = (day >= 1 && day <= 4 && isNightTime) || (day >= 2 && day <= 5 && hour < 8);
+                    if (!(isWeekdayTime || isWeekendTime || passwordIsRight)) {
+                        // 清楚当前循环
+                        clearInterval(interval);
+                        if (isPC()) {
+                            // PC端刷新网页后再显示div弹窗,防止继续打卡
+                            window.location.href = window.location.href + "?alert=true";
+                        } else {
+                            // 移动端直接显示弹窗
+                            alert("已过打卡时间,如果仍未提交打卡请去自闭.");
+                            window.location.href = window.location.href;
+                        }
+                        // 已过打卡时间,自动刷新页面
+                        window.location.href = window.location.href;
+                    }
+            }
+    },10000);
 	} else { // 未到打卡时间
 		// 显示未到时间信息
 		console.log("未到时间");
@@ -58,7 +97,9 @@ newSignInInterface("网课作业打卡总汇", undefined, "https://www.wjx.top/"
 		// 获取暗层
 		var homeworkTitle = document.getElementById("homework").children[0];
 		// 禁止打开控制台
-        document.oncontextmenu = new Function("return false;");// 禁用右键菜单
+        document.oncontextmenu = function(){
+            return false;
+        };// 禁用右键菜单
         document.onkeydown = document.onkeyup = document.onkeypress = 
             function(event) { 
                 var e = event || window.event || arguments.callee.caller.arguments[0];
@@ -109,6 +150,27 @@ newSignInInterface("网课作业打卡总汇", undefined, "https://www.wjx.top/"
                 }
 			}
 		});
+        
+        // 循环判定刷新页面
+        setInterval(function() {
+            // 重置时间并判定是否已到打卡时间
+            now = new Date();
+            console.log(now);
+            month = parseInt(now.getMonth()) + 1;
+            date = parseInt(now.getDate());
+            day = parseInt(now.getDay());
+            console.log(month + "月" + date + "日" + "星期:" +  day);
+            hour = parseInt(now.getHours());
+            minute = parseInt(now.getMinutes());
+            console.log(hour + "时" + minute + "分");
+            isNightTime = (hour == 21 && minute >= 30) || hour >= 22; 
+            isWeekendTime = (day == 6 && isNightTime) || (day == 0 && hour < 8);
+            isWeekdayTime = (day >= 1 && day <= 4 && isNightTime) || (day >= 2 && day <= 5 && hour < 8);
+              if ((isWeekdayTime || isWeekendTime || passwordIsRight)) {
+                  // 已到打卡时间,自动刷新页面
+                  window.location.href = window.location.href;
+              }
+          },10000);
 	}
 })(/*在此处更新4位中文长度密钥,可用URI字符加密*/);
 

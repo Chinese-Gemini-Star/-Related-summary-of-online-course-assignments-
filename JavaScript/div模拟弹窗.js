@@ -43,7 +43,8 @@ function showPop(text, buttonClick){
     pop.id = "pop";// 设置id为pop
     pop.innerHTML = text;// 设置内容
     pop.style.border = "1px solid #CCC";// 设置边框
-    pop.style.backgroundColor = "#000000"; // 设置背景色为白色
+    pop.style.backgroundColor = "black";
+    pop.style.background = "url(https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1585657042392&di=3ef483e9521148d19e5059e596dc2402&imgtype=0&src=http%3A%2F%2Fwww.fydsn.com%2Fwp-content%2Fuploads%2F2015%2F02%2Fbrush_0001.jpg)";// 设置背景图片(来源于网络)
     pop.style.color = "white";// 设置文字颜色
     pop.style.textAlign = "center";// 设置文字水平居中
     pop.style.position = "absolute";// 设置为绝对定位

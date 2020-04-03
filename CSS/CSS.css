@@ -19,3 +19,12 @@ h3 {
 	/* 调整小标题的字号 */
 	font-size: 40px;
 }
+* {
+    /* 禁用浏览器选词 */
+    -webkit-touch-callout:none;
+    -webkit-user-select:none;/*webkit浏览器*/
+    -moz-user-select:none;/*火狐*/
+    -ms-user-select:none;/*IE10*/
+    -khtml-user-select:none;/*早期浏览器*/
+    user-select:none;
+} 
