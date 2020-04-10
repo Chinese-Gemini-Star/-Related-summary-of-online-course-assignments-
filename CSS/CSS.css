@@ -19,7 +19,7 @@ h3 {
 	/* 调整小标题的字号 */
 	font-size: 40px;
 }
-* {
+#homework {
     /* 禁用浏览器选词 */
     -webkit-touch-callout:none;
     -webkit-user-select:none;/*webkit浏览器*/
